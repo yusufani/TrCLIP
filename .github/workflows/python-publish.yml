@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - 'setup.py'
+      - 'setup.cfg'
+      - 'trclip/__init__.py'
 
 jobs:
   bump-version:
