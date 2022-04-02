@@ -12,7 +12,7 @@ from tqdm import tqdm
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
 
-class trclip:
+class Trclip:
 
     def __init__(self, text_encoder_path, clip_model, text_encoder_base='dbmdz/bert-base-turkish-cased', device=None,
                  delete_original_text_encoder=True):
