@@ -71,7 +71,7 @@ jobs:
     - name: Commit version change to master
       run: |
         git push --follow-tags
-        - name: Install pypa/build
+
     
     - name: Install pypa/build
       run: >-
