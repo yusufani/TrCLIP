@@ -2,6 +2,6 @@
 Usage
 =====
 
-To use TrCLIP in a project::
+To use trclip in a project::
 
     import trclip

@@ -46,7 +46,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'TrCLIP'
+project = 'trclip'
 copyright = "2022, Yusuf ANI"
 author = "Yusuf ANI"
 
@@ -128,7 +128,7 @@ latex_elements = {
 # [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'trclip.tex',
-     'TrCLIP Documentation',
+     'trclip Documentation',
      'Yusuf ANI', 'manual'),
 ]
 
@@ -139,7 +139,7 @@ latex_documents = [
 # (source start file, name, description, authors, manual section).
 man_pages = [
     (master_doc, 'trclip',
-     'TrCLIP Documentation',
+     'trclip Documentation',
      [author], 1)
 ]
 
@@ -151,7 +151,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'trclip',
-     'TrCLIP Documentation',
+     'trclip Documentation',
      author,
      'trclip',
      'One line description of project.',

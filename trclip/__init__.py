@@ -1,4 +1,4 @@
-"""Top-level package for TrCLIP."""
+"""Top-level package for trclip."""
 
 __author__ = """Yusuf ANI"""
 __email__ = 'yusufani8@gmail.com'

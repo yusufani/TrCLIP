@@ -1,4 +1,4 @@
-* TrCLIP version:
+* trclip version:
 * Python version:
 * Operating System:
 

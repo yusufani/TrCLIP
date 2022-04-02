@@ -1,4 +1,4 @@
-Welcome to TrCLIP's documentation!
+Welcome to trclip's documentation!
 ======================================
 
 .. toctree::
