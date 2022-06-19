@@ -1,6 +1,6 @@
 from transformers import PreTrainedModel
 
-from TrCLIPConfig import TrCLIPConfig
+from trclip.TrCLIPConfig import TrCLIPConfig
 
 import torch.nn as nn
 from transformers import BertModel
