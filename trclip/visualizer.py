@@ -15,6 +15,7 @@ from tqdm import tqdm
 import pandas as pd
 import os
 import io
+plt.rc('font', size=8)          # controls default text sizes
 
 def frame(im, thickness=5):
     # Get input image width and height, and calculate output width and height
@@ -96,10 +97,16 @@ def image_retrieval_visualize(per_mode_indices, per_mode_probs, queries, image_p
                 axes = col_fig.subplots(1, n_images_in_figure)
                 # plt.subplots_adjust(left=0.001 , right=0.99)
 
+
+                print(f'probs : {probs}')
+                print(f'indices : {indices}')
+
                 for ax_id, ax in enumerate(axes):
                     image_path = image_paths[indices[ax_id]]
                     image = Image.open(image_path)
                     image = frame(image, thickness=3)
+                    print(f'ax_id : {ax_id}')
+                    ax.set_title( "{:.4f}".format(probs[indices[ax_id]]) , fontsize=7)
                     ax.imshow(image)
                     image.close()
 
@@ -167,15 +174,12 @@ def text_retrieval_visualize(per_mode_indices, per_mode_probs, queries, texts, n
                 texts_temps = []
                 for i in range(n_texts_in_figure):
 
-                    text = texts[indices[i]]
+                    text = texts[indices[i]] + ' Probability: ' + "{:.4f}".format(probs[i])
                     wrap_len = 74
                     text = twp.fill(text, wrap_len)
                     if auto_trans:
                         import translators as ts
-                        if text == 'papyonlu kedi':
-                            text_en = f"(En: cat with bow tie)"
-                        else:
-                            text_en = f"(En: {ts.google(text, from_language='tr', to_language='en')})"
+                        text_en = f"(En: {ts.google(text, from_language='tr', to_language='en')})"
                         text += '\n' + twp.fill(text_en, wrap_len)
                     texts_temps.append(text)
                 df = pd.DataFrame(texts_temps, columns=['Product Title'])
