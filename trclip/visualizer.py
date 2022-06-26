@@ -192,8 +192,8 @@ def text_retrieval_visualize(per_mode_indices, per_mode_probs, queries, texts, n
                 the_table.set_fontsize(8)
 
         if save_fig:
-            os.makedirs('src/product_requirements/paper/single_cat/image_retrieval/', exist_ok=True)
-            plt.savefig(f'src/product_requirements/paper/single_cat/image_retrieval/{i}.png', dpi=300)
+            os.makedirs(save_fig, exist_ok=True)
+            plt.savefig(save_fig, dpi=300)
         if show:
             plt.show()
         img_buf = BytesIO()
