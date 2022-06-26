@@ -6,4 +6,5 @@ os.system('git clone  https://huggingface.co/yusufani/trclip-vitl14-e10')
 
 #%%
 from trclip.trclip import TrCLIP
+ss
 
