@@ -1,7 +1,4 @@
-from transformers import PreTrainedModel
-
-from trclip.TrCLIPConfig import TrCLIPConfig
-
+"""Main module."""
 import torch.nn as nn
 from transformers import BertModel
 import torch
@@ -12,27 +9,27 @@ import clip
 from transformers import AutoTokenizer , AutoModel
 from tqdm import tqdm
 
-class TrCLIPModel(PreTrainedModel):
-    config_class = TrCLIPConfig
+os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
-    def __init__(self, config):
-        super().__init__(config)
-        #self.device = config.device
-        #print(f'Using device {self.device}')
-        self.clip_model, self.compose = clip.load(config.clip_model, jit=False, device=config.device)
-        #print(f'Clip Model loaded')
-        if config.delete_original_text_encoder:
+
+class Trclip:
+
+    def __init__(self, text_encoder_path, clip_model, text_encoder_base='dbmdz/bert-base-turkish-cased', device=None,
+                 delete_original_text_encoder=True):
+        self.device = device if device is not None else "cuda" if torch.cuda.is_available() else "cpu"
+        self.clip_model, self.compose = clip.load(clip_model, jit=False, device=self.device)
+        if delete_original_text_encoder:
             del self.clip_model.transformer  # delete original text encoder
-        text_encoder_model = ModifiedTextEncoder(config.text_encoder_base, self.get_embedding_size(config.clip_model))
+        text_encoder_model = ModifiedTextEncoder(text_encoder_base, self.get_embedding_size(clip_model))
         text_encoder_model.load_state_dict(
-            torch.load(config.text_encoder_path, map_location=config.device))
+            torch.load(text_encoder_path, map_location=self.device))
         text_encoder_model.eval()
-        text_encoder_model.to(config.device)
+        text_encoder_model.to(self.device)
         self.text_encoder = text_encoder_model
-        self.tokenizer = AutoTokenizer.from_pretrained(config.text_encoder_base)
+        self.tokenizer = AutoTokenizer.from_pretrained(text_encoder_base)
 
-    def forward(self, tensor):
-        return self.model.forward_features(tensor)
+        print("Model loaded")
+
     def get_image_features(self, images, return_numpy=False, verbose=False):
         images = tqdm(images) if verbose else images
         with torch.no_grad():
@@ -86,6 +83,7 @@ class TrCLIPModel(PreTrainedModel):
                 'RN50x4': 640,
                 'RN50': 1024}
         return data[clip_type]
+
 
 class ModifiedTextEncoder(nn.Module):
     def __init__(self, model_base, embeddingSize=640):
