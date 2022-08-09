@@ -1,6 +1,5 @@
 """Main module."""
 import torch.nn as nn
-from transformers import BertModel
 import torch
 import numpy as np
 import pickle
