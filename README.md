@@ -34,10 +34,10 @@
   <p align="center">
     A turkish supported CLIP
     <br />
-    <a href="https://github.com/github_username/repo_name"><strong>Paper(will be added)»</strong></a>
+    <a href="https://huggingface.co/spaces/yusufani/TrCLIP"><strong>View SPACES Demo</strong></a>
     <br />
     <br />
-    <a href="https://huggingface.co/spaces/yusufani/TrCLIP">View Demo(will be added)</a>
+    <a href="https://github.com/github_username/repo_name">Paper(will be added)</a>
     ·
     <a href="https://github.com/github_username/repo_name/issues">Report Bug</a>
     ·
@@ -59,26 +59,16 @@ In this paper, we introduce a Turkish adaption of CLIP (Contrastive Language-Ima
 
 
 
-<!-- Example outputs -->
-## Text retrieval
-![image info](./images/text_ret.png)
-![image info](./images/text_ret_sing.png)
-
-
-
-## Image retrieval
-![image info](./images/image_ret.jpg)
-![image info](./images/image_ret_sing.png)
 
 
 
 ### Prerequisites
 
-See requriments.txt
+See requirements.txt
 
 ### Installation
 
-! pip install trclip
+    ! pip install trclip
 
 
 <!-- USAGE EXAMPLES -->
@@ -135,6 +125,16 @@ Mode text_retrieval -> It calculates probabilities for each image, basically if 
 
 
 
+<!-- Example outputs -->
+## Text retrieval
+![image info](./images/text_ret.png)
+![image info](./images/text_ret_sing.png)
+
+
+
+## Image retrieval
+![image info](./images/image_ret.jpg)
+![image info](./images/image_ret_sing.png)
 
 
 
