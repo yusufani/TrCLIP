@@ -5,7 +5,7 @@ import numpy as np
 import pickle
 import os
 import clip
-from transformers import AutoTokenizer , AutoModel
+from transformers import AutoTokenizer, AutoModel
 from tqdm import tqdm
 
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
@@ -55,7 +55,7 @@ class Trclip:
 
     def get_results(self, images=None, texts=None, mode='per_image', text_features=None, image_features=None,
                     use_original_text_encoder=False):
-        if mode not in ['per_image', 'per_text']:
+        if mode not in ['per_image', 'per_text', 'text_retrieval', 'image_retrieval']:
             raise ValueError('Mode must be either per_image or per_text')
         with torch.no_grad():
             image_features = self.get_image_features(images) if image_features is None else image_features
@@ -63,9 +63,9 @@ class Trclip:
                                                    use_original_text_encoder=use_original_text_encoder) if text_features is None else text_features
             logit_scale = self.clip_model.logit_scale.exp().float().to(self.device)
             # cosine similarity as logits
-            if mode == 'per_image':
+            if mode == 'per_image' or mode == 'text_retrieval':
                 per_mode_probs = logit_scale * image_features @ text_features.t()
-            elif mode == 'per_text':
+            elif mode == 'per_text' or mode == 'image_retrieval':
                 per_mode_probs = logit_scale * text_features @ image_features.t()
 
             per_mode_probs = per_mode_probs.softmax(dim=-1).cpu().detach().numpy()
