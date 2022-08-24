@@ -15,7 +15,9 @@ from tqdm import tqdm
 import pandas as pd
 import os
 import io
-plt.rc('font', size=8)          # controls default text sizes
+
+plt.rc('font', size=8)  # controls default text sizes
+
 
 def frame(im, thickness=5):
     # Get input image width and height, and calculate output width and height
@@ -43,10 +45,29 @@ def frame(im, thickness=5):
 def image_retrieval_visualize(per_mode_indices, per_mode_probs, queries, image_paths, n_figure_in_column=2,
                               n_images_in_figure=4, n_figure_in_row=1, save_fig=False, show=True,
                               break_on_index=-1):
+    """
+    The image_retrieval_visualize function takes in the following parameters:
+        per_mode_indices : A list of lists, where each sublist contains the indices of images that are most similar to a given query. Result of trclip.get_result()
+        per_mode_probs : A list of lists, where each sublist contains the probabilities that an image is associated with a given query. Result of trclip.get_result()
+        queries : The texts
+    :param per_mode_indices: Specify the indices of images that are retrieved for each mode  Result of trclip.get_result()
+    :param per_mode_probs: Store the probabilities of each image in the dataset for each retrieval mode  Result of trclip.get_result()
+    :param queries: Pass the  texts
+    :param image_paths: Retrieve the image paths from the dataset
+    :param n_figure_in_column=2: Set the number of columns in the figure
+    :param n_images_in_figure=4: Display the top 4 results in each figure
+    :param n_figure_in_row=1: Determine how many figures will be in a row
+    :param save_fig=False: Save the figure as a png file
+    :param show=True: Show the image in a window
+    :param break_on_index=-1: Break the loop when we reach the last figure
+    :return: A pil image
+    :doc-author: Trelent
+    """
+
     for i, chunk in tqdm(
-            enumerate(chunked(zip(per_mode_indices, per_mode_probs, queries), n_figure_in_column * n_figure_in_row)),
-            total=int(math.ceil(len(per_mode_probs) / (n_figure_in_column * n_figure_in_row))),
-            desc='Generating figures'):
+        enumerate(chunked(zip(per_mode_indices, per_mode_probs, queries), n_figure_in_column * n_figure_in_row)),
+        total=int(math.ceil(len(per_mode_probs) / (n_figure_in_column * n_figure_in_row))),
+        desc='Generating figures'):
         if break_on_index == i:
             break
 
@@ -97,7 +118,6 @@ def image_retrieval_visualize(per_mode_indices, per_mode_probs, queries, image_p
                 axes = col_fig.subplots(1, n_images_in_figure)
                 # plt.subplots_adjust(left=0.001 , right=0.99)
 
-
                 print(f'probs : {probs}')
                 print(f'indices : {indices}')
 
@@ -106,7 +126,7 @@ def image_retrieval_visualize(per_mode_indices, per_mode_probs, queries, image_p
                     image = Image.open(image_path)
                     image = frame(image, thickness=3)
                     print(f'ax_id : {ax_id}')
-                    ax.set_title( "{:.4f}".format(probs[indices[ax_id]]) , fontsize=7)
+                    ax.set_title("{:.4f}".format(probs[indices[ax_id]]), fontsize=7)
                     ax.imshow(image)
                     image.close()
 
@@ -121,13 +141,35 @@ def image_retrieval_visualize(per_mode_indices, per_mode_probs, queries, image_p
         plt.savefig(img_buf, format='png')
         return Image.open(img_buf)
 
+
 def text_retrieval_visualize(per_mode_indices, per_mode_probs, queries, texts, n_figure_in_column=2,
                              n_texts_in_figure=4, n_figure_in_row=1, save_fig=True, show=False,
                              break_on_index=-1, auto_trans=False):
+    """
+    The text_retrieval_visualize function takes in the following parameters:
+        per_mode_indices: A list of lists, where each sublist contains indices of text that are most similar to a given query.  Result of trclip.get_result()
+        per_mode_probs: A list of lists, where each sublist contains probabilities corresponding to the indices in per_mode_indices.  Result of trclip.get_result()
+        queries: The original image paths for which we are trying to find similar texts.
+        texts: The actual text data
+
+    :param per_mode_indices: Retrieve the indices of the texts that are most similar to each query  Result of trclip.get_result()
+    :param per_mode_probs: Visualize the probabilities of each mode  Result of trclip.get_result()
+    :param queries:  the image paths
+    :param texts: texts
+    :param n_figure_in_column=2: Determine how many images will be in one column
+    :param n_texts_in_figure=4: Determine how many texts to show in each figure
+    :param n_figure_in_row=1: Control how many images will be shown in a row
+    :param save_fig=True: Save the figure as an image in the specified directory
+    :param show=False: Hide the figure
+    :param break_on_index=-1: Break the iteration when it reaches the end of the list
+    :param auto_trans=False: if the translation of the text to english
+    :return: A pil image
+    :doc-author: Trelent
+    """
     for i, chunk in tqdm(
-            enumerate(chunked(zip(per_mode_indices, per_mode_probs, queries), n_figure_in_column * n_figure_in_row)),
-            total=int(math.ceil(len(per_mode_probs) / (n_figure_in_column * n_figure_in_row))),
-            desc='Generating figures'):
+        enumerate(chunked(zip(per_mode_indices, per_mode_probs, queries), n_figure_in_column * n_figure_in_row)),
+        total=int(math.ceil(len(per_mode_probs) / (n_figure_in_column * n_figure_in_row))),
+        desc='Generating figures'):
         if break_on_index == i:
             break
 
@@ -166,7 +208,7 @@ def text_retrieval_visualize(per_mode_indices, per_mode_probs, queries, texts, n
                 image_path = query
                 image = Image.open(image_path)
                 image = frame(image, thickness=3)
-                ax_im.imshow(image )
+                ax_im.imshow(image)
                 image.close()
                 ax_im.set_axis_off()
                 ax_text.set_axis_off()

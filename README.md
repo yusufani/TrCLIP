@@ -61,7 +61,6 @@ In this paper, we introduce a Turkish adaption of CLIP (Contrastive Language-Ima
 
 
 
-
 ### Prerequisites
 
 See requirements.txt
