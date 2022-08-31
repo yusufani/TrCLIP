@@ -54,7 +54,7 @@ class Trclip:
                 return text_features if not return_numpy else text_features.detach().cpu().numpy()
 
     def get_results(self, images=None, texts=None, mode='per_image', text_features=None, image_features=None,
-                    use_original_text_encoder=False):
+                    use_original_text_encoder=False, return_probs=False):
         if mode not in ['per_image', 'per_text', 'text_retrieval', 'image_retrieval']:
             raise ValueError('Mode must be either per_image or per_text')
         with torch.no_grad():
@@ -67,7 +67,8 @@ class Trclip:
                 per_mode_probs = logit_scale * image_features @ text_features.t()
             elif mode == 'per_text' or mode == 'image_retrieval':
                 per_mode_probs = logit_scale * text_features @ image_features.t()
-
+            if return_probs:
+                return per_mode_probs
             per_mode_probs = per_mode_probs.softmax(dim=-1).cpu().detach().numpy()
         # per_mode_probs = np.around(per_mode_probs, decimals=2)
         per_mode_indices = [np.argsort(prob)[::-1] for prob in per_mode_probs]
