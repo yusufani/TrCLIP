@@ -3,6 +3,10 @@ from PIL import Image
 from more_itertools import chunked
 from PIL import Image
 import math
+from PIL import Image
+import requests
+from tqdm import tqdm
+from io import BytesIO
 from tqdm import tqdm
 from matplotlib import pyplot as plt
 import textwrap as twp
@@ -15,9 +19,7 @@ from tqdm import tqdm
 import pandas as pd
 import os
 import io
-
-plt.rc('font', size=8)  # controls default text sizes
-
+plt.rc('font', size=8)          # controls default text sizes
 
 def frame(im, thickness=5):
     # Get input image width and height, and calculate output width and height
@@ -123,10 +125,19 @@ def image_retrieval_visualize(per_mode_indices, per_mode_probs, queries, image_p
 
                 for ax_id, ax in enumerate(axes):
                     image_path = image_paths[indices[ax_id]]
-                    image = Image.open(image_path)
+                    if 'http' in image_path:
+                        try:
+                            response = requests.get(image_path)
+                            image = Image.open(BytesIO(response.content))
+                        except Exception as e :
+                            print(e)
+                            image = Image.open('not-found.png')
+
+                    else:
+                        image = Image.open(image_path)
                     image = frame(image, thickness=3)
                     print(f'ax_id : {ax_id}')
-                    ax.set_title("{:.4f}".format(probs[indices[ax_id]]), fontsize=7)
+                    ax.set_title( "{:.4f}".format(probs[indices[ax_id]]) , fontsize=7)
                     ax.imshow(image)
                     image.close()
 
@@ -206,7 +217,17 @@ def text_retrieval_visualize(per_mode_indices, per_mode_probs, queries, texts, n
                                  }, color='black')
 
                 image_path = query
-                image = Image.open(image_path)
+                if 'http' in image_path:
+                    try:
+                        response = requests.get(image_path)
+                        image = Image.open(BytesIO(response.content))
+                    except Exception as e:
+                        print(e)
+                        image = Image.open('not-found.png')
+
+                else:
+                    image = Image.open(image_path)
+
                 image = frame(image, thickness=3)
                 ax_im.imshow(image)
                 image.close()
@@ -216,7 +237,7 @@ def text_retrieval_visualize(per_mode_indices, per_mode_probs, queries, texts, n
                 texts_temps = []
                 for i in range(n_texts_in_figure):
 
-                    text = texts[indices[i]] + ' Probability: ' + "{:.4f}".format(probs[i])
+                    text = texts[indices[i]] + ' Probability: ' + "{:.4f}".format(probs[indices[i]])
                     wrap_len = 74
                     text = twp.fill(text, wrap_len)
                     if auto_trans:
