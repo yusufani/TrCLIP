@@ -124,6 +124,8 @@ def image_retrieval_visualize(per_mode_indices, per_mode_probs, queries, image_p
                 print(f'indices : {indices}')
 
                 for ax_id, ax in enumerate(axes):
+                    if ax_id >= len(probs):
+                        break
                     image_path = image_paths[indices[ax_id]]
                     if 'http' in image_path:
                         try:
