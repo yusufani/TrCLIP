@@ -106,7 +106,7 @@ def image_retrieval_visualize(per_mode_indices, per_mode_probs, queries, image_p
                                    'alpha': 0.8,
                                    'pad': 2,
                                    }, color='black')
-                wrap_len = 68
+                wrap_len = 54
                 if type(query) == list:
                     text1 = twp.fill(f'Text : {query[0]}', wrap_len)
                     text2 = twp.fill(f'(En : {query[1]})', wrap_len)
