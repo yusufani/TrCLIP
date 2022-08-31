@@ -19,7 +19,9 @@ from tqdm import tqdm
 import pandas as pd
 import os
 import io
-plt.rc('font', size=8)          # controls default text sizes
+
+plt.rc('font', size=8)  # controls default text sizes
+
 
 def frame(im, thickness=5):
     # Get input image width and height, and calculate output width and height
@@ -104,16 +106,14 @@ def image_retrieval_visualize(per_mode_indices, per_mode_probs, queries, image_p
                                    'alpha': 0.8,
                                    'pad': 2,
                                    }, color='black')
-
+                wrap_len = 68
                 if type(query) == list:
-                    wrap_len = 68
-
                     text1 = twp.fill(f'Text : {query[0]}', wrap_len)
                     text2 = twp.fill(f'(En : {query[1]})', wrap_len)
                     print(text2)
                     query = text1 + '\n' + text2
                 else:
-                    query = f'Text : {query}'
+                    query = twp.fill(f'Text : {query}', wrap_len)
                 query = "\n" + query
                 col_fig.suptitle(query)
 
@@ -129,19 +129,19 @@ def image_retrieval_visualize(per_mode_indices, per_mode_probs, queries, image_p
                         try:
                             response = requests.get(image_path)
                             image = Image.open(BytesIO(response.content))
-                        except Exception as e :
+                        except Exception as e:
                             print(e)
                             image = Image.open('not-found.png')
 
                     else:
                         try:
                             image = Image.open(image_path)
-                        except Exception as e :
+                        except Exception as e:
                             print(e)
                             image = Image.open('not-found.png')
                     image = frame(image, thickness=3)
                     print(f'ax_id : {ax_id}')
-                    ax.set_title( "{:.4f}".format(probs[indices[ax_id]]) , fontsize=7)
+                    ax.set_title("{:.4f}".format(probs[indices[ax_id]]), fontsize=7)
                     ax.imshow(image)
                     image.close()
 
