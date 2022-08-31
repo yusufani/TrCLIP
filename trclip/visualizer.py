@@ -134,7 +134,11 @@ def image_retrieval_visualize(per_mode_indices, per_mode_probs, queries, image_p
                             image = Image.open('not-found.png')
 
                     else:
-                        image = Image.open(image_path)
+                        try:
+                            image = Image.open(image_path)
+                        except Exception as e :
+                            print(e)
+                            image = Image.open('not-found.png')
                     image = frame(image, thickness=3)
                     print(f'ax_id : {ax_id}')
                     ax.set_title( "{:.4f}".format(probs[indices[ax_id]]) , fontsize=7)
