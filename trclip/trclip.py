@@ -94,7 +94,7 @@ class ModifiedTextEncoder(nn.Module):
         self.linear1 = nn.Linear(768, embeddingSize)
         self.linear2 = nn.Linear(embeddingSize, embeddingSize)
 
-    def forward(self, ids, mask):
+    def forward(self, ids, mask=None):
         outputs = self.bert(
             ids,
             attention_mask=mask)
